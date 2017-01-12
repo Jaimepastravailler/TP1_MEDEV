@@ -2,7 +2,7 @@
 #include <osg/Vec3f>
 #include <vector>
 
-#define M_PI 3.1415
+//#define M_PI 3.1415
 
 class Avion{
 
@@ -11,12 +11,12 @@ protected:
 	osg::Vec3f direction; // direction actuelle
 	osg::Vec3f up; // vecteur up
 	bool cooldown; // est ce qu'on a tiré le tour d'avant
-	bool tir; // est ce qu'on tire 
+	bool tir; // est ce qu'on tire
 	float angle; // demandez à mael xD
 	float cap; // demandez à mael  (c'est de la 3D lol)
-	bool camp; // 0 pour le joueur 1 pour lennemi
+	bool camp; // 0 pour le joueur 1 pour l'ennemi
 	int id;
-	
+
 public:
 	Avion();
 
@@ -45,6 +45,6 @@ public:
 	int tirer(int taillecube, std::vector<Avion*> &ListeAvions);
 	virtual void strategie(std::vector<Avion*> &v)=0;
 	~Avion();
-	
+
 	static void DetecteCollision(int cube_size, std::vector<Avion*> &avions); //Méthode pour détruire les avions en collision
 };

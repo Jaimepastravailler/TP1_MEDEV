@@ -1,6 +1,6 @@
 #include "Joueur.h"
 #include<cmath>
-#include<osg/vec3f>
+#include<osg/Vec3f>
 #include <vector>
 #include <cstdlib>
 #include <iostream>
@@ -44,10 +44,10 @@ void Joueur::strategie(std::vector<Avion*> &v){
         {
             Vec3f posFuture = v[i]->getPosition() +v[i]->getDirection() - position;
             posFuture.normalize();
-            float prodScal = posFuture*direction;
-            if (prodScal<angleMin || angleMin == -1)
+            float rot = acos(posFuture*direction);
+            if (rot<angleMin || angleMin == -1)
             {
-                angleMin = acos(prodScal)*180.0/M_PI;
+                angleMin = rot*180.0/M_PI;
                 indiceProche = i;
             }
         }

@@ -1,5 +1,5 @@
 #include "Avion.h"
-#include <osg/vec3f>
+#include <osg/Vec3f>
 #include <osg/Geometry>
 
 Avion::Avion(){
@@ -16,7 +16,7 @@ Avion::~Avion(){
 
 void Avion::tourner()
 {
-	osg::Quat q1 = osg::Quat( angle*osg::PI/180.f,osg::Vec3d(direction^up),0, osg::Vec3d(direction),0, osg::Vec3d(up)); 
+	osg::Quat q1 = osg::Quat( angle*osg::PI/180.f,osg::Vec3d(direction^up),0, osg::Vec3d(direction),0, osg::Vec3d(up));
 	up=q1*osg::Vec3d(up);
 
 	osg::Quat q2 = osg::Quat( 0, osg::Vec3d(direction^up),cap*osg::PI/180.f, osg::Vec3d(direction),0, osg::Vec3d(up));
@@ -27,7 +27,7 @@ void Avion::tourner()
 
 void Avion::DetecteCollision(int cube_size, std::vector<Avion*> &avions){
     std::vector<int> idem;
-    for (unsigned int i = 0; i<avions.size(); i++){//ici, on vérifie les murs et on compare les positions relatives (voir si deux sont ds le meme cube) 
+    for (unsigned int i = 0; i<avions.size(); i++){//ici, on vérifie les murs et on compare les positions relatives (voir si deux sont ds le meme cube)
         osg::Vec3f pos1 = avions[i]->getPosition();
         if (pos1[0] < 0 || pos1[0] > cube_size || pos1[1] < 0 || pos1[1] > cube_size || pos1[2] < 0 || pos1[2] > cube_size ){
             idem.push_back(i);

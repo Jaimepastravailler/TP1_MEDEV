@@ -1,6 +1,6 @@
 #include "Ennemi.h"
 #include<cmath>
-#include<osg/vec3f>
+#include<osg/Vec3f>
 
 
 Ennemi::Ennemi() : Avion()
@@ -64,7 +64,7 @@ void Ennemi::strategie(std::vector<Avion*> &v){
 
 		}
 	}
-	return 
+	return
 }*/
 
 float Ennemi::dist(osg::Vec3f a,osg::Vec3f b){

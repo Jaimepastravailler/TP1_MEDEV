@@ -1,18 +1,6 @@
-#include "Cube.h"
-#include <iostream>
-#include <ctime>
-#include <cstdlib>
-#include "Avion.h"
-#include "Joueur.h"
-#include "Ennemi.h"
-#include <vector>
-#include "Cube.h"
-//#include "afficher.h"
+#pragma once
 
-#include <iostream>
-#include <ctime>
-#include <cstdlib>
-#include <vector>
+#include "Cube.h"
 
 using namespace std;
 /* Affichage du monde */
@@ -51,16 +39,16 @@ Cube::Cube(int _n) {
 
 	// add the state manipulator
     viewer->addEventHandler( new osgGA::StateSetManipulator(viewer->getCamera()->getOrCreateStateSet()));
-	
-	
+
+
 	viewer->setCameraManipulator(new osgGA::TrackballManipulator);
     viewer->realize();
-	
+
 	viewer->setSceneData(root.get());
 	afficherCube();
 }
 void Cube::ConstructionAvion() {
-	
+
 	patAvionAmi1 = new osg::PositionAttitudeTransform();
 	patAvionAmi2 = new osg::PositionAttitudeTransform();
 	patAlignement = new osg::PositionAttitudeTransform();
@@ -102,7 +90,7 @@ void Cube::ConstructionAvion() {
 	root->addChild(patSCALE.get());
 	patSCALE->addChild(patAvionEnnemi1.get());
 	patSCALE->addChild(patAvionEnnemi2.get());
-	
+
 	patSCALE->addChild(patAlignement.get());
 	patAlignement->addChild(patAvionAmi1.get());
 	patAlignement->addChild(patAvionAmi2.get());
@@ -172,11 +160,11 @@ void Cube::afficherCube()
 	osg::ref_ptr<osg::Material> material (new osg::Material);
 
 	//Setting material 1 - capsule
-	material->setAmbient(osg::Material::Face::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
-	material->setDiffuse(osg::Material::Face::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
-	material->setSpecular(osg::Material::Face::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
-	material->setEmission(osg::Material::Face::FRONT_AND_BACK,osg::Vec4(0,0,0,0));
-	material->setShininess(osg::Material::Face::FRONT_AND_BACK, 0);
+	material->setAmbient(osg::Material::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
+	material->setDiffuse(osg::Material::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
+	material->setSpecular(osg::Material::FRONT_AND_BACK,osg::Vec4(0,0,0.8,1));
+	material->setEmission(osg::Material::FRONT_AND_BACK,osg::Vec4(0,0,0,0));
+	material->setShininess(osg::Material::FRONT_AND_BACK, 0);
 
 	osg::ref_ptr<osg::StateSet> nodeStateSet1 ( geodePlane1->getOrCreateStateSet() );
 	osg::ref_ptr<osg::StateSet> nodeStateSet2 ( geodePlane2->getOrCreateStateSet() );
@@ -270,14 +258,14 @@ osg::ref_ptr<osg::Group> Cube::createCube() {
 	return cube;
 }
 
-void Cube::afficherAvion() {	
+void Cube::afficherAvion() {
 	osg::Quat attitude;
 
 	patAvionAmi1->setPosition(ListeAvion[0]->getPosition());
 	patAvionAmi2->setPosition(osg::Vec3d(ListeAvion[1]->getPosition()[1],ListeAvion[1]->getPosition()[1],ListeAvion[1]->getPosition()[2]));
 	patAvionEnnemi1->setPosition(getSubCubePosition(ListeAvion[2]->getPosition()[2],ListeAvion[2]->getPosition()[1],ListeAvion[2]->getPosition()[2]));
 	patAvionEnnemi2->setPosition(getSubCubePosition(ListeAvion[3]->getPosition()[3],ListeAvion[3]->getPosition()[1],ListeAvion[3]->getPosition()[2]));
-	
+
 	attitude.makeRotate(osg::Vec3d(1,0,0),osg::Vec3d(ListeAvion[0]->getDirection()));
 	patAvionAmi1->setAttitude(attitude);
 	attitude.makeRotate(osg::Vec3d(1,0,0),osg::Vec3d(ListeAvion[1]->getDirection()));
@@ -288,13 +276,13 @@ void Cube::afficherAvion() {
 	patAvionEnnemi2->setAttitude(attitude);
 }
 
-void Cube::elimination(vector<int> ListeTouchés, vector<Avion*> &ListeAvion) // Supprime les avions contenus dans le vecteur Listetouchés du vecteur principal ListeAvion à partir de leurs Id
+void Cube::elimination(vector<int> ListeTouches, vector<Avion*> &ListeAvion) // Supprime les avions contenus dans le vecteur Listetouchés du vecteur principal ListeAvion à partir de leurs Id
 {
-    for (unsigned int i=0;i<ListeTouchés.size();i++) // on élimine les avions touchés
+    for (unsigned int i=0;i<ListeTouches.size();i++) // on élimine les avions touchés
             {
                 for(unsigned int j= 0; j<ListeAvion.size();j++)
                 {
-                    if (ListeAvion[j]->getId() == ListeTouchés[i])
+                    if (ListeAvion[j]->getId() == ListeTouches[i])
                     {
                          ListeAvion.erase(ListeAvion.begin() + j);
                     }
@@ -322,7 +310,7 @@ bool Cube::VerificationFin(std::vector<Avion*> &ListeAvion) // Si il reste deux 
 void Cube::mainLoop() {
 
 		afficherAvion();
-	
+
     for (unsigned int i=0;i<ListeAvion.size();i++) // Annonce les paramètres de chaque avion
     {
         ListeAvion[i]->strategie(ListeAvion);
